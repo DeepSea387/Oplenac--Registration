@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Season Registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --cream:#FAF3E6;
+    --card:#FFFDF8;
+    --indigo:#2E3A59;
+    --indigo-soft:#586487;
+    --cranberry:#A13D3D;
+    --mustard:#C99A2E;
+    --charcoal:#2B2420;
+    --line:#DCD2BC;
+    --sage:#5C7A5E;
+    --danger:#A13D3D;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--charcoal);
+    font-family:'Karla', sans-serif;
+    padding:48px 20px 80px;
+  }
+  .wrap{max-width:680px;margin:0 auto;}
+
+  .stitch{
+    height:14px;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--cranberry) 0 6px,
+      transparent 6px 12px
+    );
+    opacity:0.85;
+    border-radius:2px;
+    margin-bottom:28px;
+  }
+
+  header{margin-bottom:8px;}
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--cranberry);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:34px;
+    line-height:1.15;
+    margin:0 0 10px;
+    color:var(--indigo);
+  }
+  .lede{
+    font-size:15.5px;
+    color:var(--indigo-soft);
+    line-height:1.6;
+    margin:0 0 32px;
+    max-width:52ch;
+  }
+
+  .lang-btn{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    color:var(--indigo-soft);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:6px 12px;
+    cursor:pointer;
+  }
+  .lang-btn.active{
+    color:#fff;
+    background:var(--indigo);
+    border-color:var(--indigo);
+  }
+
+  .qr-card{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:18px 20px;
+    margin-bottom:24px;
+  }
+  #qrcode{
+    flex-shrink:0;
+    width:120px;
+    height:120px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:6px;
+  }
+  #qrcode img{ display:block; }
+  .qr-text{ flex:1; min-width:0; }
+  .qr-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:16px;
+    color:var(--indigo);
+    margin:0 0 2px;
+  }
+  .qr-sub{
+    font-size:12.5px;
+    color:var(--indigo-soft);
+    margin:0 0 10px;
+  }
+  .qr-link-row{
+    display:flex;
+    gap:8px;
+  }
+  #shareLink{
+    flex:1;
+    min-width:0;
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:#fff;
+    color:var(--indigo-soft);
+  }
+  #copyLinkBtn{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    color:#fff;
+    background:var(--indigo);
+    border:none;
+    border-radius:4px;
+    padding:8px 14px;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  #copyLinkBtn:hover{ background:#232D46; }
+  @media (max-width:520px){
+    .qr-card{ flex-direction:column; text-align:center; }
+    .qr-link-row{ flex-direction:column; }
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:28px 26px 30px;
+    margin-bottom:24px;
+    position:relative;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:22px;
+    padding-bottom:14px;
+    border-bottom:1px dashed var(--line);
+  }
+  .section-num{
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    color:var(--mustard);
+    background:var(--charcoal);
+    color:#FAF3E6;
+    width:26px;height:26px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .section-title{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:20px;
+    color:var(--indigo);
+    margin:0;
+  }
+  .section-sub{
+    font-size:13px;
+    color:var(--indigo-soft);
+    margin:2px 0 0;
+  }
+
+  .field{margin-bottom:16px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;}
+  .dob-row{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px;}
+  @media (max-width:520px){.row2, .row3, .dob-row{grid-template-columns:1fr;}}
+
+  label{
+    display:block;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--indigo);
+    margin-bottom:6px;
+    letter-spacing:0.01em;
+  }
+  .req::after{content:" *"; color:var(--cranberry);}
+
+  input[type=text], input[type=email], input[type=tel], input[type=date], select, textarea{
+    width:100%;
+    font-family:'Karla', sans-serif;
+    font-size:15px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:#fff;
+    color:var(--charcoal);
+  }
+  input:focus, select:focus, textarea:focus{
+    outline:none;
+    border-color:var(--indigo);
+    box-shadow:0 0 0 3px rgba(46,58,89,0.12);
+  }
+  textarea{resize:vertical;min-height:64px;}
+  .hint{font-size:12px;color:var(--indigo-soft);margin-top:5px;}
+
+  .child-card{
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:18px 18px 6px;
+    margin-bottom:18px;
+    background:#FFFCF5;
+    position:relative;
+  }
+  .child-card-head{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:14px;
+  }
+  .child-card-head h3{
+    font-family:'Fraunces', serif;
+    font-size:16px;
+    font-weight:600;
+    margin:0;
+    color:var(--cranberry);
+  }
+  .child-price{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    font-weight:400;
+    color:var(--mustard);
+    margin-left:4px;
+  }
+  .total-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-top:18px;
+    padding-top:16px;
+    border-top:1px dashed var(--line);
+  }
+  .total-bar .label{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--indigo-soft);
+  }
+  .total-bar .amount{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+    color:var(--indigo);
+  }
+  .remove-btn{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    color:var(--indigo-soft);
+    background:none;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:5px 10px;
+    cursor:pointer;
+  }
+  .remove-btn:hover{border-color:var(--cranberry); color:var(--cranberry);}
+
+  .add-btn{
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    color:var(--indigo);
+    background:#fff;
+    border:1px dashed var(--indigo-soft);
+    border-radius:4px;
+    padding:11px 16px;
+    width:100%;
+    cursor:pointer;
+    letter-spacing:0.02em;
+  }
+  .add-btn:hover{background:var(--cream);}
+  .add-btn:disabled{opacity:0.5; cursor:not-allowed; background:#fff;}
+  .add-btn:disabled:hover{background:#fff;}
+
+  .check-row{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .check-row:last-child{border-bottom:none;}
+  .check-row input{margin-top:3px;flex-shrink:0;}
+  .check-row span{font-size:14px;line-height:1.5;}
+
+  .friday-slot{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:8px 10px;
+    cursor:pointer;
+    background:#FFFCF5;
+  }
+  .friday-slot:hover{border-color:var(--indigo-soft);}
+  .friday-slot.selected{border-color:var(--sage); background:#EEF3EC;}
+  .friday-slot.full{opacity:0.5; cursor:not-allowed; background:var(--cream);}
+  .friday-slot input{flex-shrink:0;}
+  .friday-slot .fdate{font-size:13px; color:var(--charcoal);}
+  .friday-slot .fspots{font-family:'Space Mono', monospace; font-size:11px; color:var(--indigo-soft); white-space:nowrap;}
+  .friday-slot.full .fspots{color:var(--cranberry);}
+
+  .submit-btn{
+    width:100%;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+    color:#fff;
+    background:var(--cranberry);
+    border:none;
+    border-radius:4px;
+    padding:16px;
+    cursor:pointer;
+    margin-top:8px;
+  }
+  .submit-btn:hover{background:#8A3333;}
+  .submit-btn:disabled{background:#C9AFAF;cursor:not-allowed;}
+
+  .error-text{color:var(--danger); font-size:12.5px; margin-top:5px; display:none;}
+  .field.invalid input, .field.invalid select{border-color:var(--danger);}
+  .field.invalid .error-text{display:block;}
+
+  #confirm{display:none;text-align:center;padding:50px 26px;}
+  #confirm .mark{
+    font-family:'Fraunces', serif;
+    font-size:40px;
+    color:var(--sage);
+    margin-bottom:6px;
+  }
+  #confirm h2{
+    font-family:'Fraunces', serif;
+    font-size:24px;
+    color:var(--indigo);
+    margin:0 0 10px;
+  }
+  #confirm p{color:var(--indigo-soft); font-size:14.5px; line-height:1.6; margin:0 auto; max-width:40ch;}
+  #confirm .ref{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    color:var(--mustard);
+    margin-top:18px;
+    letter-spacing:0.06em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="stitch"></div>
+  <div style="display:flex; justify-content:flex-end; gap:6px; margin-bottom:14px;">
+    <button type="button" class="lang-btn active" id="langEn" data-lang="en">🇺🇸 EN</button>
+    <button type="button" class="lang-btn" id="langSr" data-lang="sr">🇷🇸 SR</button>
+  </div>
+  <header>
+    <p class="eyebrow" data-i18n="eyebrow">Season registration</p>
+    <h1 data-i18n="h1">Register for the coming season</h1>
+    <p class="lede" data-i18n="lede">Tell us about your family and each dancer joining us this season. Registration takes about five minutes — you can add more than one child below.</p>
+  </header>
+
+  <div class="qr-card">
+    <div id="qrcode"></div>
+    <div class="qr-text">
+      <p class="qr-title" data-i18n="share.title">Scan to register</p>
+      <p class="qr-sub" data-i18n="share.sub">Or share the link below</p>
+      <div class="qr-link-row">
+        <input type="text" id="shareLink" readonly>
+        <button type="button" id="copyLinkBtn" data-i18n="share.copy">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <form id="regForm" novalidate>
+
+    <div class="card">
+      <div class="section-head">
+        <div class="section-num">1</div>
+        <div>
+          <p class="section-title" data-i18n="s1.title">Parents / guardians</p>
+          <p class="section-sub" data-i18n="s1.sub">Primary contacts for the season</p>
+        </div>
+      </div>
+
+      <p style="font-family:'Space Mono', monospace; font-size:12px; letter-spacing:0.04em; color:var(--cranberry); text-transform:uppercase; margin:0 0 12px;" data-i18n="s1.p1">Parent / guardian 1</p>
+      <div class="row2">
+        <div class="field">
+          <label class="req" data-i18n="field.first">First name</label>
+          <input type="text" id="p1First" required>
+          <p class="error-text" data-i18n="err.first">Enter a first name.</p>
+        </div>
+        <div class="field">
+          <label class="req" data-i18n="field.last">Last name</label>
+          <input type="text" id="p1Last" required>
+          <p class="error-text" data-i18n="err.last">Enter a last name.</p>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label class="req" data-i18n="field.email">Email</label>
+          <input type="email" id="p1Email" required>
+          <p class="error-text" data-i18n="err.email">Enter a valid email.</p>
+        </div>
+        <div class="field">
+          <label class="req" data-i18n="field.phone">Phone</label>
+          <input type="tel" id="p1Phone" placeholder="(555) 555-5555" required>
+          <p class="error-text" data-i18n="err.phone">Enter a phone number.</p>
+        </div>
+      </div>
+
+      <p style="font-family:'Space Mono', monospace; font-size:12px; letter-spacing:0.04em; color:var(--cranberry); text-transform:uppercase; margin:20px 0 12px;"><span data-i18n="s1.p2">Parent / guardian 2</span> <span style="color:var(--indigo-soft); text-transform:none; letter-spacing:0;" data-i18n="optional">(optional)</span></p>
+      <div class="row2">
+        <div class="field">
+          <label data-i18n="field.first">First name</label>
+          <input type="text" id="p2First">
+        </div>
+        <div class="field">
+          <label data-i18n="field.last">Last name</label>
+          <input type="text" id="p2Last">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label data-i18n="field.email">Email</label>
+          <input type="email" id="p2Email">
+          <p class="error-text" data-i18n="err.email">Enter a valid email.</p>
+        </div>
+        <div class="field">
+          <label data-i18n="field.phone">Phone</label>
+          <input type="tel" id="p2Phone" placeholder="(555) 555-5555">
+        </div>
+      </div>
+
+      <p style="font-family:'Space Mono', monospace; font-size:12px; letter-spacing:0.04em; color:var(--indigo); text-transform:uppercase; margin:20px 0 12px;" data-i18n="s1.address">Home address</p>
+      <div class="field">
+        <label data-i18n="field.street">Street address</label>
+        <input type="text" id="pStreet" placeholder="123 Main St">
+      </div>
+      <div class="row3">
+        <div class="field">
+          <label data-i18n="field.city">City</label>
+          <input type="text" id="pCity">
+        </div>
+        <div class="field">
+          <label data-i18n="field.state">State</label>
+          <input type="text" id="pState">
+        </div>
+        <div class="field">
+          <label data-i18n="field.zip">ZIP</label>
+          <input type="text" id="pZip">
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label data-i18n="field.eName">Emergency contact name</label>
+          <input type="text" id="eName" placeholder="If different from above">
+        </div>
+        <div class="field">
+          <label data-i18n="field.ePhone">Emergency contact phone</label>
+          <input type="tel" id="ePhone">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="req" data-i18n="field.church">Are you a member of St. John the Baptist Orthodox Church, Bellwood, IL?</label>
+        <select id="churchMember" required>
+          <option value="" data-i18n="opt.selectAnswer">Select an answer</option>
+          <option value="yes" data-i18n="opt.yes">Yes</option>
+          <option value="no" data-i18n="opt.no">No</option>
+        </select>
+        <p class="error-text" data-i18n="err.church">Please answer yes or no.</p>
+      </div>
+      <div class="field" id="churchNameWrap" style="display:none;">
+        <label data-i18n="field.churchName">If you are a member of another church, please enter name and location</label>
+        <input type="text" id="churchName" placeholder="Church name and location, or NA">
+        <p class="hint" data-i18n="hint.churchName">Enter the church's name and location, or NA if you're not a member of one.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div class="section-num">2</div>
+        <div>
+          <p class="section-title" data-i18n="s2.title">Dancers</p>
+          <p class="section-sub" data-i18n="s2.sub">Add each child you're registering</p>
+        </div>
+      </div>
+      <div id="childrenWrap"></div>
+      <button type="button" class="add-btn" id="addChild" data-i18n="btn.addChild">+ Add another child</button>
+      <div class="total-bar">
+        <span class="label" id="feeBreakdown">1 child registered</span>
+        <span class="amount" id="feeTotal">$180</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div class="section-num">3</div>
+        <div>
+          <p class="section-title" data-i18n="s3.title">Kitchen volunteer sign-up</p>
+          <p class="section-sub" data-i18n="s3.sub">Every family commits to at least 3 Fridays</p>
+        </div>
+      </div>
+
+      <p id="kitchenIntro" style="font-size:14px; color:var(--indigo-soft); line-height:1.6; margin:0 0 16px;"></p>
+
+      <div id="fridayStatus" style="font-size:13px; color:var(--indigo-soft); margin-bottom:10px;"></div>
+      <div id="fridayGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; max-height:260px; overflow-y:auto; border:1px solid var(--line); border-radius:4px; padding:10px; background:#fff;"></div>
+
+      <div class="field" style="margin-top:14px;">
+        <p id="fridayCount" style="font-family:'Space Mono', monospace; font-size:12.5px; color:var(--indigo-soft); margin:0;"></p>
+        <p class="error-text" id="fridayErr" style="margin-top:6px;" data-i18n="err.friday">Choose at least 3 Fridays to volunteer.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div class="section-num">4</div>
+        <div>
+          <p class="section-title" data-i18n="s4.title">Consent</p>
+          <p class="section-sub" data-i18n="s4.sub">Please review before submitting</p>
+        </div>
+      </div>
+
+      <label class="check-row">
+        <input type="checkbox" id="cMedical">
+        <span data-i18n="consent.medical">I authorize group leaders to seek emergency medical care for my child(ren) if I cannot be reached.</span>
+      </label>
+      <label class="check-row">
+        <input type="checkbox" id="cPhoto">
+        <span data-i18n="consent.photo">I give permission for photos or video of my child(ren) to be used in the group's newsletter, website, or social media.</span>
+      </label>
+
+      <p style="font-family:'Space Mono', monospace; font-size:12px; letter-spacing:0.04em; color:var(--indigo); text-transform:uppercase; margin:24px 0 12px;" data-i18n="rules.heading">Oplenac Folklore Group rules and regulations</p>
+
+      <div style="max-height:260px; overflow-y:auto; border:1px solid var(--line); border-radius:4px; padding:16px 18px; background:#fff; font-size:13.5px; line-height:1.65; color:var(--charcoal);">
+        <p style="margin:0 0 10px; font-weight:700;" data-i18n="rules.subheading">For dancers and parents</p>
+        <ol style="margin:0; padding-left:20px;">
+          <li style="margin-bottom:10px;" data-i18n="rules.1">It is the obligation of all the parents to make sure their children treat the church property with respect and not cause any damage to the church grounds. No fighting, swearing, property damage, or disrespect towards a teacher and others will be tolerated. Violations can lead to exclusion for the dancer.</li>
+          <li style="margin-bottom:10px;" data-i18n="rules.2">Any damage made to the church or injuries by the dancer will be the sole responsibility of the parent. Violations can lead to exclusion for the dancer.</li>
+          <li style="margin-bottom:10px;" data-i18n="rules.3">Dance uniforms are the responsibility of the dancer. If any part of the uniform is damaged or lost, the dancer/parent will be liable for the replacement cost.</li>
+          <li style="margin-bottom:10px;" data-i18n="rules.4">Parents are expected to volunteer in the kitchen 3 Fridays during the year. If parents cannot work on their scheduled day, it is THEIR responsibility to notify the Board and find their own replacement. The Board will do its best to remind you of your upcoming kitchen schedule, but it is ultimately your responsibility to put it on your calendar and set up your reminders.</li>
+          <li style="margin-bottom:10px;" data-i18n="rules.5">Parents are expected to volunteer their time at dances/festivals. Our dances are fundraisers for our own group and every family MUST help at each dance. These events are announced with ample time to ensure your availability.</li>
+          <li style="margin-bottom:10px;" data-i18n="rules.6">If parents do not volunteer at dances and Friday night practices, their dancer will not be eligible to receive benefits — their expenses to participate in our group activity may not be covered by the group (travel and hotel costs for group trips).</li>
+          <li style="margin-bottom:10px;" data-i18n="rules.7">There will be no congregating upstairs during practice. This includes children who are not practicing, as well as parents. NO FOOD OR DRINKS (EXCEPT WATER) UPSTAIRS.</li>
+          <li data-i18n="rules.8">These rules are set in place for the safety and security of our children. Oplenac is a voluntary organization that relies solely on the help of our members. By signing this form, you and your dancer agree to abide by the rules and regulations above to ensure that we have another successful year.</li>
+        </ol>
+      </div>
+
+      <label class="check-row" style="margin-top:6px;">
+        <input type="checkbox" id="cRules" required>
+        <span class="req" style="font-weight:400;" data-i18n="rules.agree">I have read the Oplenac Folklore Group Rules and Regulations and agree to the above.</span>
+      </label>
+      <p class="error-text" id="rulesErr" style="display:none;margin-top:8px;" data-i18n="err.rules">You must agree to the Rules and Regulations to register.</p>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn" data-i18n="btn.submit">Submit registration</button>
+  </form>
+
+  <div id="confirm">
+    <div class="mark">✓</div>
+    <h2 data-i18n="confirm.h2">Registration received</h2>
+    <p data-i18n="confirm.body">Thanks for signing up for the season. We'll email a confirmation shortly with rehearsal dates, payment instructions, and what to bring.</p>
+    <p class="ref" id="confirmTotal" style="color:var(--indigo); font-size:15px; margin-top:14px;"></p>
+    <p class="ref" id="refCode"></p>
+  </div>
+
+  <div style="text-align:center; margin-top:36px;">
+    <button type="button" id="adminLink" style="background:none; border:none; font-family:'Space Mono', monospace; font-size:11px; color:var(--indigo-soft); text-decoration:underline; cursor:pointer; padding:8px;">Board access: view registration data</button>
+  </div>
+
+  <div id="adminPanel" style="display:none; margin-top:16px;">
+    <div class="card">
+      <div class="section-head">
+        <div class="section-num">↓</div>
+        <div>
+          <p class="section-title">Registration data</p>
+          <p class="section-sub">Saved directly to your Google Sheet</p>
+        </div>
+      </div>
+      <p style="font-size:13.5px; color:var(--indigo-soft); line-height:1.6; margin:0 0 16px;">
+        Every submission is saved live to your <strong style="color:var(--charcoal);">Oplenac Season Registrations</strong>
+        Google Sheet — no exporting or pasting needed. Open it anytime to see the "Registrations" and "Kitchen" tabs update
+        as families sign up.
+      </p>
+      <a href="https://docs.google.com/spreadsheets/d/1XSy5D_l_1hSGxhZTNJEMIFJxySv7-CcXbD_o_Ydhn2s/edit" target="_blank" rel="noopener" class="add-btn" style="display:block; text-align:center; text-decoration:none; box-sizing:border-box;">Open the Google Sheet</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const I18N = {
+  en: {
+    eyebrow: 'Season registration',
+    h1: 'Register for the coming season',
+    lede: "Tell us about your family and each dancer joining us this season. Registration takes about five minutes — you can add more than one child below.",
+    'share.title': 'Scan to register',
+    'share.sub': 'Or share the link below',
+    'share.copy': 'Copy',
+    'share.copied': 'Copied!',
+    's1.title': 'Parents / guardians',
+    's1.sub': 'Primary contacts for the season',
+    's1.p1': 'Parent / guardian 1',
+    's1.p2': 'Parent / guardian 2',
+    's1.address': 'Home address',
+    optional: '(optional)',
+    'field.first': 'First name',
+    'field.last': 'Last name',
+    'field.email': 'Email',
+    'field.phone': 'Phone',
+    'field.street': 'Street address',
+    'field.city': 'City',
+    'field.state': 'State',
+    'field.zip': 'ZIP',
+    'field.eName': 'Emergency contact name',
+    'field.ePhone': 'Emergency contact phone',
+    'field.church': 'Are you a member of St. John the Baptist Orthodox Church, Bellwood, IL?',
+    'field.churchName': 'If you are a member of another church, please enter name and location',
+    'hint.churchName': "Enter the church's name and location, or NA if you're not a member of one.",
+    'opt.selectAnswer': 'Select an answer',
+    'opt.yes': 'Yes',
+    'opt.no': 'No',
+    'err.first': 'Enter a first name.',
+    'err.last': 'Enter a last name.',
+    'err.email': 'Enter a valid email.',
+    'err.phone': 'Enter a phone number.',
+    'err.church': 'Please answer yes or no.',
+    'err.dob': 'Enter a date of birth.',
+    'err.shirt': 'Choose a t-shirt size.',
+    'err.friday': 'Choose at least 3 Fridays to volunteer.',
+    'err.rules': 'You must agree to the Rules and Regulations to register.',
+    's2.title': 'Dancers',
+    's2.sub': "Add each child you're registering",
+    'btn.addChild': '+ Add another child',
+    'btn.addChildMax': 'Maximum of {n} children reached',
+    'btn.remove': 'Remove',
+    'child.label': 'Child',
+    'field.dob': 'Date of birth',
+    months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    'dob.month': 'Month', 'dob.day': 'Day', 'dob.year': 'Year',
+    'field.shirt': 'T-shirt size',
+    'field.grad2027': 'Graduating high school in 2027?',
+    'opt.selectSize': 'Select size',
+    'opt.yxs': 'Youth XS', 'opt.ys': 'Youth S', 'opt.ym': 'Youth M', 'opt.yl': 'Youth L',
+    'opt.as': 'Adult S', 'opt.am': 'Adult M', 'opt.al': 'Adult L', 'opt.axl': 'Adult XL',
+    childRegistered1: '1 child registered',
+    childRegisteredN: '{n} children registered',
+    's3.title': 'Kitchen volunteer sign-up',
+    's3.sub': 'Every family commits to at least 3 Fridays',
+    kitchenIntro: 'Our kitchen runs on family volunteers. Each family signs up for at least <strong style="color:var(--charcoal);">3 Fridays</strong> before the season ends on <strong style="color:var(--charcoal);">May 28, 2027</strong>. Only <strong style="color:var(--charcoal);">4 spots</strong> are available per Friday, so pick your dates below — spots fill on a first-come basis.',
+    fridayLoading: 'Loading available Fridays…',
+    fridayStatus: 'Spots update when you load this page — pick your dates below.',
+    fridayFull: 'Full',
+    fridayLeft: '{n} left',
+    fridaySelected: '{n} of {min} Fridays selected',
+    fridaySelectedTotal: '{n} of {min} Fridays selected ({n} total)',
+    fridayConflict: 'Someone just filled {dates}. Pick different date(s) below.',
+    's4.title': 'Consent',
+    's4.sub': 'Please review before submitting',
+    'consent.medical': 'I authorize group leaders to seek emergency medical care for my child(ren) if I cannot be reached.',
+    'consent.photo': "I give permission for photos or video of my child(ren) to be used in the group's newsletter, website, or social media.",
+    'rules.heading': 'Oplenac Folklore Group rules and regulations',
+    'rules.subheading': 'For dancers and parents',
+    'rules.1': 'It is the obligation of all the parents to make sure their children treat the church property with respect and not cause any damage to the church grounds. No fighting, swearing, property damage, or disrespect towards a teacher and others will be tolerated. Violations can lead to exclusion for the dancer.',
+    'rules.2': 'Any damage made to the church or injuries by the dancer will be the sole responsibility of the parent. Violations can lead to exclusion for the dancer.',
+    'rules.3': 'Dance uniforms are the responsibility of the dancer. If any part of the uniform is damaged or lost, the dancer/parent will be liable for the replacement cost.',
+    'rules.4': 'Parents are expected to volunteer in the kitchen 3 Fridays during the year. If parents cannot work on their scheduled day, it is THEIR responsibility to notify the Board and find their own replacement. The Board will do its best to remind you of your upcoming kitchen schedule, but it is ultimately your responsibility to put it on your calendar and set up your reminders.',
+    'rules.5': 'Parents are expected to volunteer their time at dances/festivals. Our dances are fundraisers for our own group and every family MUST help at each dance. These events are announced with ample time to ensure your availability.',
+    'rules.6': 'If parents do not volunteer at dances and Friday night practices, their dancer will not be eligible to receive benefits — their expenses to participate in our group activity may not be covered by the group (travel and hotel costs for group trips).',
+    'rules.7': 'There will be no congregating upstairs during practice. This includes children who are not practicing, as well as parents. NO FOOD OR DRINKS (EXCEPT WATER) UPSTAIRS.',
+    'rules.8': 'These rules are set in place for the safety and security of our children. Oplenac is a voluntary organization that relies solely on the help of our members. By signing this form, you and your dancer agree to abide by the rules and regulations above to ensure that we have another successful year.',
+    'rules.agree': 'I have read the Oplenac Folklore Group Rules and Regulations and agree to the above.',
+    'btn.submit': 'Submit registration',
+    'btn.checking': 'Checking Friday availability…',
+    'btn.submitting': 'Submitting…',
+    'confirm.h2': 'Registration received',
+    'confirm.body': "Thanks for signing up for the season. We'll email a confirmation shortly with rehearsal dates, payment instructions, and what to bring.",
+    'confirm.total': 'Total due: ${amount}',
+    'confirm.ref': 'Confirmation code: {code}',
+    'confirm.fridays': 'Kitchen Fridays: {dates}'
+  },
+  sr: {
+    eyebrow: 'Prijava za sezonu',
+    h1: 'Prijava za predstojeću sezonu',
+    lede: 'Recite nam nešto o svojoj porodici i svakom igraču koji se prijavljuje za ovu sezonu. Prijava traje oko pet minuta — ispod možete dodati više od jednog deteta.',
+    'share.title': 'Skenirajte da se prijavite',
+    'share.sub': 'Ili podelite link ispod',
+    'share.copy': 'Kopiraj',
+    'share.copied': 'Kopirano!',
+    's1.title': 'Roditelji / staratelji',
+    's1.sub': 'Glavni kontakti za sezonu',
+    's1.p1': 'Roditelj / staratelj 1',
+    's1.p2': 'Roditelj / staratelj 2',
+    's1.address': 'Kućna adresa',
+    optional: '(opciono)',
+    'field.first': 'Ime',
+    'field.last': 'Prezime',
+    'field.email': 'Email',
+    'field.phone': 'Telefon',
+    'field.street': 'Ulica i broj',
+    'field.city': 'Grad',
+    'field.state': 'Država',
+    'field.zip': 'Poštanski broj',
+    'field.eName': 'Ime osobe za hitne slučajeve',
+    'field.ePhone': 'Telefon osobe za hitne slučajeve',
+    'field.church': 'Da li ste član Srpske pravoslavne crkve Svetog Jovana Krstitelja, Bellwood, IL?',
+    'field.churchName': 'Ako ste član druge crkve, unesite naziv i lokaciju',
+    'hint.churchName': 'Unesite naziv i lokaciju crkve, ili NA ako niste član nijedne.',
+    'opt.selectAnswer': 'Izaberite odgovor',
+    'opt.yes': 'Da',
+    'opt.no': 'Ne',
+    'err.first': 'Unesite ime.',
+    'err.last': 'Unesite prezime.',
+    'err.email': 'Unesite ispravnu email adresu.',
+    'err.phone': 'Unesite broj telefona.',
+    'err.church': 'Molimo odgovorite sa da ili ne.',
+    'err.dob': 'Unesite datum rođenja.',
+    'err.shirt': 'Izaberite veličinu majice.',
+    'err.friday': 'Izaberite najmanje 3 petka za volontiranje.',
+    'err.rules': 'Morate se saglasiti sa Pravilima i propisima da biste se prijavili.',
+    's2.title': 'Igrači',
+    's2.sub': 'Dodajte svako dete koje prijavljujete',
+    'btn.addChild': '+ Dodaj još jedno dete',
+    'btn.addChildMax': 'Dostignut maksimum od {n} dece',
+    'btn.remove': 'Ukloni',
+    'child.label': 'Dete',
+    'field.dob': 'Datum rođenja',
+    months: ['Januar','Februar','Mart','April','Maj','Jun','Jul','Avgust','Septembar','Oktobar','Novembar','Decembar'],
+    'dob.month': 'Mesec', 'dob.day': 'Dan', 'dob.year': 'Godina',
+    'field.shirt': 'Veličina majice',
+    'field.grad2027': 'Da li dete završava srednju školu 2027. godine?',
+    'opt.selectSize': 'Izaberite veličinu',
+    'opt.yxs': 'Dečija XS', 'opt.ys': 'Dečija S', 'opt.ym': 'Dečija M', 'opt.yl': 'Dečija L',
+    'opt.as': 'Odrasla S', 'opt.am': 'Odrasla M', 'opt.al': 'Odrasla L', 'opt.axl': 'Odrasla XL',
+    childRegistered1: '1 dete prijavljeno',
+    childRegisteredN: '{n} dece prijavljeno',
+    's3.title': 'Prijava za rad u kuhinji',
+    's3.sub': 'Svaka porodica se obavezuje na najmanje 3 petka',
+    kitchenIntro: 'Naša kuhinja funkcioniše zahvaljujući porodicama volonterima. Svaka porodica se prijavljuje za najmanje <strong style="color:var(--charcoal);">3 petka</strong> pre nego što se sezona završi <strong style="color:var(--charcoal);">28. maja 2027.</strong> Dostupna su samo <strong style="color:var(--charcoal);">4 mesta</strong> po petku, zato izaberite svoje datume ispod — mesta se popunjavaju po redosledu prijave.',
+    fridayLoading: 'Učitavaju se dostupni petci…',
+    fridayStatus: 'Mesta se ažuriraju pri učitavanju stranice — izaberite datume ispod.',
+    fridayFull: 'Popunjeno',
+    fridayLeft: '{n} slobodno',
+    fridaySelected: '{n} od {min} petka izabrano',
+    fridaySelectedTotal: '{n} od {min} petka izabrano (ukupno {n})',
+    fridayConflict: 'Neko je upravo popunio {dates}. Izaberite drugi datum ispod.',
+    's4.title': 'Saglasnost',
+    's4.sub': 'Molimo pregledajte pre slanja',
+    'consent.medical': 'Ovlašćujem vođe grupe da potraže hitnu medicinsku pomoć za moje dete/decu ukoliko ne mogu biti kontaktiran/a.',
+    'consent.photo': 'Dajem dozvolu da se fotografije ili video snimci mog deteta/dece koriste u biltenu, na sajtu ili društvenim mrežama grupe.',
+    'rules.heading': 'Pravila i propisi Folklorne grupe Oplenac',
+    'rules.subheading': 'Za igrače i roditelje',
+    'rules.1': 'Obaveza svih roditelja je da obezbede da njihova deca postupaju sa poštovanjem prema imovini crkve i da ne prave nikakvu štetu na crkvenom imanju. Tuča, psovanje, oštećenje imovine ili nepoštovanje prema učitelju i drugima neće biti tolerisano. Kršenje ovih pravila može dovesti do isključenja igrača.',
+    'rules.2': 'Za svaku štetu nanesenu crkvi ili povrede koje prouzrokuje igrač, isključivu odgovornost snosi roditelj. Kršenje ovog pravila može dovesti do isključenja igrača.',
+    'rules.3': 'Plesne nošnje su odgovornost igrača. Ukoliko se bilo koji deo nošnje ošteti ili izgubi, igrač/roditelj snosi troškove zamene.',
+    'rules.4': 'Od roditelja se očekuje da volontiraju u kuhinji 3 petka tokom godine. Ukoliko roditelj ne može da radi na zakazani dan, njegova/njena je odgovornost da o tome obavesti Odbor i pronađe zamenu. Odbor će se potruditi da vas podseti na predstojeći raspored u kuhinji, ali je krajnja odgovornost na vama da to unesete u svoj kalendar i podesite podsetnike.',
+    'rules.5': 'Od roditelja se očekuje da volontiraju svoje vreme na igrankama/festivalima. Naše igranke su prikupljanje sredstava za našu grupu i svaka porodica MORA da pomogne na svakoj igranci. Ovi događaji se najavljuju na vreme kako bi se obezbedila vaša dostupnost.',
+    'rules.6': 'Ukoliko roditelji ne volontiraju na igrankama i petkom uveče na probama, njihov igrač neće imati pravo na pogodnosti — troškovi učešća u aktivnostima grupe (putovanja i hotel za grupna putovanja) možda neće biti pokriveni od strane grupe.',
+    'rules.7': 'Nije dozvoljeno okupljanje na spratu tokom proba. Ovo se odnosi i na decu koja ne vežbaju, kao i na roditelje. NIJE DOZVOLJENA HRANA NITI PIĆE (OSIM VODE) NA SPRATU.',
+    'rules.8': 'Ova pravila su postavljena radi bezbednosti i sigurnosti naše dece. Oplenac je dobrovoljna organizacija koja se oslanja isključivo na pomoć svojih članova. Potpisivanjem ovog obrasca, vi i vaš igrač se slažete da poštujete gore navedena pravila i propise kako bismo imali još jednu uspešnu godinu.',
+    'rules.agree': 'Pročitao/la sam Pravila i propise Folklorne grupe Oplenac i slažem se sa gore navedenim.',
+    'btn.submit': 'Pošalji prijavu',
+    'btn.checking': 'Proverava se dostupnost petkom…',
+    'btn.submitting': 'Slanje…',
+    'confirm.h2': 'Prijava primljena',
+    'confirm.body': 'Hvala što ste se prijavili za sezonu. Uskoro ćemo vam poslati email sa datumima proba, uputstvima za plaćanje i onim što je potrebno da ponesete.',
+    'confirm.total': 'Ukupno za uplatu: ${amount}',
+    'confirm.ref': 'Šifra potvrde: {code}',
+    'confirm.fridays': 'Petci za kuhinju: {dates}'
+  }
+};
+
+let currentLang = 'en';
+
+function t(key, vars){
+  let str = (I18N[currentLang] && I18N[currentLang][key]) || (I18N.en[key] || key);
+  if(vars){
+    Object.keys(vars).forEach(k => { str = str.replace('{' + k + '}', vars[k]); });
+  }
+  return str;
+}
+
+function applyLanguage(lang, root){
+  currentLang = lang;
+  const scope = root || document;
+  scope.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  scope.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder));
+  });
+  if(scope === document){
+    document.documentElement.lang = lang === 'sr' ? 'sr-Latn' : 'en';
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    document.getElementById('langSr').classList.toggle('active', lang === 'sr');
+    const intro = document.getElementById('kitchenIntro');
+    if(intro) intro.innerHTML = t('kitchenIntro');
+    if(typeof renderFridayGrid === 'function' && typeof fridayDates !== 'undefined'){
+      document.getElementById('fridayStatus').textContent = t('fridayStatus');
+      renderFridayGrid();
+      updateFridayCount();
+    }
+    if(typeof updatePricing === 'function') updatePricing();
+    document.querySelectorAll('.child-card').forEach(card => {
+      if(typeof populateDobSelects === 'function') populateDobSelects(card);
+    });
+  }
+}
+
+document.getElementById('langEn').addEventListener('click', () => applyLanguage('en'));
+document.getElementById('langSr').addEventListener('click', () => applyLanguage('sr'));
+
+const shirtSizes = [
+  ['', 'Select size', 'opt.selectSize'],
+  ['YXS', 'Youth XS', 'opt.yxs'], ['YS', 'Youth S', 'opt.ys'], ['YM', 'Youth M', 'opt.ym'], ['YL', 'Youth L', 'opt.yl'],
+  ['AS', 'Adult S', 'opt.as'], ['AM', 'Adult M', 'opt.am'], ['AL', 'Adult L', 'opt.al'], ['AXL', 'Adult XL', 'opt.axl']
+];
+
+const KITCHEN_CAPACITY = 4;
+const KITCHEN_MIN_DATES = 3;
+const SEASON_END = new Date('2027-05-28T23:59:59');
+
+function getFridays(){
+  const dates = [];
+  const d = new Date();
+  d.setHours(0,0,0,0);
+  const dayOffset = (5 - d.getDay() + 7) % 7;
+  d.setDate(d.getDate() + dayOffset);
+  while(d <= SEASON_END){
+    dates.push(d.toISOString().slice(0,10));
+    d.setDate(d.getDate() + 7);
+  }
+  return dates;
+}
+
+function formatFriday(iso){
+  const d = new Date(iso + 'T00:00:00');
+  const locale = currentLang === 'sr' ? 'sr-Latn' : 'en-US';
+  return d.toLocaleDateString(locale, { month:'short', day:'numeric' });
+}
+
+const fridayDates = getFridays();
+const fridayCounts = {};
+const selectedFridays = new Set();
+
+const API_URL = 'https://script.google.com/macros/s/AKfycbzQZwakSNCcJG06f28JoYymjiPxQyx1z82D8EclCyHUyu61WTk3QEMMF6e2AI-SUPZJ/exec';
+
+async function loadFridayCounts(){
+  try{
+    const url = API_URL + '?action=fridayCounts&dates=' + encodeURIComponent(JSON.stringify(fridayDates));
+    const res = await fetch(url);
+    const data = await res.json();
+    fridayDates.forEach(date => {
+      fridayCounts[date] = (data.counts && data.counts[date]) || 0;
+    });
+  }catch(err){
+    console.error('Friday count fetch error:', err);
+    fridayDates.forEach(date => { fridayCounts[date] = 0; });
+  }
+}
+
+function renderFridayGrid(){
+  const grid = document.getElementById('fridayGrid');
+  grid.innerHTML = fridayDates.map(date => {
+    const count = fridayCounts[date] || 0;
+    const remaining = KITCHEN_CAPACITY - count;
+    const full = remaining <= 0;
+    const selected = selectedFridays.has(date);
+    return `
+      <label class="friday-slot ${full ? 'full' : ''} ${selected ? 'selected' : ''}" data-date="${date}">
+        <span>
+          <input type="checkbox" ${selected ? 'checked' : ''} ${full ? 'disabled' : ''} data-date="${date}">
+          <span class="fdate">${formatFriday(date)}</span>
+        </span>
+        <span class="fspots">${full ? t('fridayFull') : t('fridayLeft', {n: remaining})}</span>
+      </label>
+    `;
+  }).join('');
+}
+
+function updateFridayCount(){
+  const n = selectedFridays.size;
+  document.getElementById('fridayCount').textContent = n > KITCHEN_MIN_DATES
+    ? t('fridaySelectedTotal', {n, min: KITCHEN_MIN_DATES})
+    : t('fridaySelected', {n, min: KITCHEN_MIN_DATES});
+}
+
+document.getElementById('fridayGrid').addEventListener('change', (e) => {
+  if(e.target.type !== 'checkbox') return;
+  const date = e.target.dataset.date;
+  if(e.target.checked){
+    selectedFridays.add(date);
+  } else {
+    selectedFridays.delete(date);
+  }
+  e.target.closest('.friday-slot').classList.toggle('selected', e.target.checked);
+  updateFridayCount();
+});
+
+(async function initFridays(){
+  await loadFridayCounts();
+  renderFridayGrid();
+  updateFridayCount();
+})();
+
+(function initShareCard(){
+  const link = window.location.href;
+  const linkInput = document.getElementById('shareLink');
+  if(linkInput) linkInput.value = link;
+
+  const qrEl = document.getElementById('qrcode');
+  if(qrEl && typeof QRCode !== 'undefined'){
+    try{
+      new QRCode(qrEl, {
+        text: link,
+        width: 108,
+        height: 108,
+        colorDark: '#2E3A59',
+        colorLight: '#FFFFFF',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }catch(err){
+      console.error('QR code error:', err);
+    }
+  }
+
+  const copyBtn = document.getElementById('copyLinkBtn');
+  if(copyBtn){
+    copyBtn.addEventListener('click', async () => {
+      try{
+        await navigator.clipboard.writeText(link);
+      }catch(err){
+        linkInput.select();
+        document.execCommand('copy');
+      }
+      const original = copyBtn.textContent;
+      copyBtn.textContent = t('share.copied');
+      setTimeout(() => { copyBtn.textContent = t('share.copy'); }, 1500);
+    });
+  }
+})();
+
+
+let childCount = 0;
+
+document.getElementById('churchMember').addEventListener('change', (e) => {
+  const wrap = document.getElementById('churchNameWrap');
+  wrap.style.display = e.target.value === 'no' ? 'block' : 'none';
+  if(e.target.value !== 'no') document.getElementById('churchName').value = '';
+});
+
+const DOB_YEAR_SPAN = 30;
+
+function daysInMonth(year, month){
+  return new Date(year, month, 0).getDate();
+}
+
+function populateDobSelects(card){
+  const monthSel = card.querySelector('.cDobMonth');
+  const daySel = card.querySelector('.cDobDay');
+  const yearSel = card.querySelector('.cDobYear');
+
+  const prevMonth = monthSel.value;
+  const prevDay = daySel.value;
+  const prevYear = yearSel.value;
+
+  monthSel.innerHTML = '<option value="">' + t('dob.month') + '</option>' +
+    I18N[currentLang].months.map((name, i) => `<option value="${i+1}">${name}</option>`).join('');
+
+  const thisYear = new Date().getFullYear();
+  let yearOptions = '<option value="">' + t('dob.year') + '</option>';
+  for(let y = thisYear; y >= thisYear - DOB_YEAR_SPAN; y--){
+    yearOptions += `<option value="${y}">${y}</option>`;
+  }
+  yearSel.innerHTML = yearOptions;
+
+  monthSel.value = prevMonth;
+  yearSel.value = prevYear;
+
+  const m = parseInt(monthSel.value, 10);
+  const y = parseInt(yearSel.value, 10);
+  const maxDay = (m && y) ? daysInMonth(y, m) : 31;
+
+  let dayOptions = '<option value="">' + t('dob.day') + '</option>';
+  for(let d = 1; d <= maxDay; d++){
+    dayOptions += `<option value="${d}">${d}</option>`;
+  }
+  daySel.innerHTML = dayOptions;
+  daySel.value = (prevDay && parseInt(prevDay, 10) <= maxDay) ? prevDay : '';
+}
+
+function initDobListeners(card){
+  card.querySelector('.cDobMonth').addEventListener('change', () => populateDobSelects(card));
+  card.querySelector('.cDobYear').addEventListener('change', () => populateDobSelects(card));
+}
+
+function getChildDob(card){
+  const m = card.querySelector('.cDobMonth').value;
+  const d = card.querySelector('.cDobDay').value;
+  const y = card.querySelector('.cDobYear').value;
+  if(!m || !d || !y) return '';
+  return y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+}
+
+function addChild(){
+  childCount++;
+  const id = childCount;
+  const div = document.createElement('div');
+  div.className = 'child-card';
+  div.dataset.childId = id;
+  div.innerHTML = `
+    <div class="child-card-head">
+      <h3><span data-i18n="child.label">Child</span> ${id} <span class="child-price" data-price-for="${id}"></span></h3>
+      <button type="button" class="remove-btn" data-remove="${id}" data-i18n="btn.remove">Remove</button>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label class="req" data-i18n="field.first">First name</label>
+        <input type="text" class="cFirst" required>
+        <p class="error-text" data-i18n="err.first">Enter a first name.</p>
+      </div>
+      <div class="field">
+        <label class="req" data-i18n="field.last">Last name</label>
+        <input type="text" class="cLast" required>
+        <p class="error-text" data-i18n="err.last">Enter a last name.</p>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label class="req" data-i18n="field.dob">Date of birth</label>
+        <div class="dob-row">
+          <select class="cDobMonth" required></select>
+          <select class="cDobDay" required></select>
+          <select class="cDobYear" required></select>
+        </div>
+        <p class="error-text" data-i18n="err.dob">Enter a date of birth.</p>
+      </div>
+      <div class="field">
+        <label class="req" data-i18n="field.shirt">T-shirt size</label>
+        <select class="cShirt" required>
+          ${shirtSizes.map(s => `<option value="${s[0]}" data-i18n="${s[2]}">${s[1]}</option>`).join('')}
+        </select>
+        <p class="error-text" data-i18n="err.shirt">Choose a t-shirt size.</p>
+      </div>
+    </div>
+    <div class="field">
+      <label data-i18n="field.grad2027">Graduating high school in 2027?</label>
+      <select class="cGrad2027">
+        <option value="no" data-i18n="opt.no">No</option>
+        <option value="yes" data-i18n="opt.yes">Yes</option>
+      </select>
+    </div>
+  `;
+  document.getElementById('childrenWrap').appendChild(div);
+  applyLanguage(currentLang, div);
+  populateDobSelects(div);
+  initDobListeners(div);
+}
+
+document.getElementById('addChild').addEventListener('click', () => {
+  if(document.querySelectorAll('.child-card').length >= MAX_CHILDREN) return;
+  addChild();
+  updatePricing();
+});
+
+document.getElementById('childrenWrap').addEventListener('click', (e) => {
+  if(e.target.dataset.remove){
+    const card = e.target.closest('.child-card');
+    if(document.querySelectorAll('.child-card').length > 1){
+      card.remove();
+      updatePricing();
+    }
+  }
+});
+
+const MAX_CHILDREN = 5;
+
+function priceForPosition(pos){
+  if(pos === 1) return 180;
+  if(pos === 2) return 160;
+  return 140;
+}
+
+function updatePricing(){
+  const cards = Array.from(document.querySelectorAll('.child-card'));
+  let total = 0;
+  cards.forEach((card, i) => {
+    const pos = i + 1;
+    const price = priceForPosition(pos);
+    total += price;
+    const badge = card.querySelector('.child-price');
+    if(badge) badge.textContent = '$' + price;
+  });
+  document.getElementById('feeTotal').textContent = '$' + total;
+  document.getElementById('feeBreakdown').textContent =
+    cards.length + (cards.length === 1 ? ' child registered' : ' children registered');
+
+  const addBtn = document.getElementById('addChild');
+  const atMax = cards.length >= MAX_CHILDREN;
+  addBtn.disabled = atMax;
+  addBtn.textContent = atMax ? 'Maximum of ' + MAX_CHILDREN + ' children reached' : '+ Add another child';
+}
+
+addChild();
+updatePricing();
+
+function setInvalid(field, invalid){
+  field.classList.toggle('invalid', invalid);
+}
+
+function validate(){
+  let ok = true;
+
+  [['p1First'],['p1Last'],['p1Email'],['p1Phone']].forEach(([id]) => {
+    const input = document.getElementById(id);
+    const field = input.closest('.field');
+    const bad = !input.value.trim() || (id === 'p1Email' && !/^\S+@\S+\.\S+$/.test(input.value));
+    setInvalid(field, bad);
+    if(bad) ok = false;
+  });
+
+  const p2Email = document.getElementById('p2Email');
+  const p2EmailField = p2Email.closest('.field');
+  const p2EmailBad = p2Email.value.trim() && !/^\S+@\S+\.\S+$/.test(p2Email.value);
+  setInvalid(p2EmailField, p2EmailBad);
+  if(p2EmailBad) ok = false;
+
+  const churchMember = document.getElementById('churchMember');
+  const churchField = churchMember.closest('.field');
+  const churchBad = !churchMember.value;
+  setInvalid(churchField, churchBad);
+  if(churchBad) ok = false;
+
+  document.querySelectorAll('.child-card').forEach(card => {
+    ['cFirst','cLast','cShirt'].forEach(cls => {
+      const input = card.querySelector('.' + cls);
+      const field = input.closest('.field');
+      const bad = !input.value.trim();
+      setInvalid(field, bad);
+      if(bad) ok = false;
+    });
+    const dobField = card.querySelector('.cDobMonth').closest('.field');
+    const dobBad = !getChildDob(card);
+    setInvalid(dobField, dobBad);
+    if(dobBad) ok = false;
+  });
+
+  const fridayErr = document.getElementById('fridayErr');
+  if(selectedFridays.size < KITCHEN_MIN_DATES){
+    fridayErr.style.display = 'block';
+    ok = false;
+  } else {
+    fridayErr.style.display = 'none';
+  }
+
+  const rules = document.getElementById('cRules');
+  const rulesErr = document.getElementById('rulesErr');
+  if(!rules.checked){
+    rulesErr.style.display = 'block';
+    ok = false;
+  } else {
+    rulesErr.style.display = 'none';
+  }
+
+  return ok;
+}
+
+document.getElementById('regForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if(!validate()) return;
+
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = t('btn.submitting');
+
+  const chosenDates = Array.from(selectedFridays);
+  const refCode = 'REG-' + Date.now().toString(36).toUpperCase();
+
+  const children = Array.from(document.querySelectorAll('.child-card')).map(card => ({
+    firstName: card.querySelector('.cFirst').value.trim(),
+    lastName: card.querySelector('.cLast').value.trim(),
+    dob: getChildDob(card),
+    shirtSize: card.querySelector('.cShirt').value,
+    graduatingHS2027: card.querySelector('.cGrad2027').value
+  }));
+
+  const registration = {
+    refCode,
+    parent1: {
+      firstName: document.getElementById('p1First').value.trim(),
+      lastName: document.getElementById('p1Last').value.trim(),
+      email: document.getElementById('p1Email').value.trim(),
+      phone: document.getElementById('p1Phone').value.trim()
+    },
+    parent2: {
+      firstName: document.getElementById('p2First').value.trim(),
+      lastName: document.getElementById('p2Last').value.trim(),
+      email: document.getElementById('p2Email').value.trim(),
+      phone: document.getElementById('p2Phone').value.trim()
+    },
+    address: {
+      street: document.getElementById('pStreet').value.trim(),
+      city: document.getElementById('pCity').value.trim(),
+      state: document.getElementById('pState').value.trim(),
+      zip: document.getElementById('pZip').value.trim()
+    },
+    emergency: {
+      name: document.getElementById('eName').value.trim(),
+      phone: document.getElementById('ePhone').value.trim()
+    },
+    churchMembership: {
+      isMember: document.getElementById('churchMember').value,
+      churchName: document.getElementById('churchMember').value === 'no'
+        ? document.getElementById('churchName').value.trim()
+        : ''
+    },
+    children,
+    consent: {
+      medical: document.getElementById('cMedical').checked,
+      photo: document.getElementById('cPhoto').checked,
+      rulesAgreed: document.getElementById('cRules').checked
+    },
+    kitchenDates: chosenDates
+  };
+
+  let result;
+  try{
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify(registration)
+    });
+    result = await res.json();
+  }catch(err){
+    console.error('Submission error:', err);
+    const fridayErr = document.getElementById('fridayErr');
+    fridayErr.textContent = 'Could not reach the server. Check your connection and try again.';
+    fridayErr.style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = t('btn.submit');
+    return;
+  }
+
+  if(!result.ok){
+    if(result.conflicts && result.conflicts.length){
+      await loadFridayCounts();
+      result.conflicts.forEach(date => selectedFridays.delete(date));
+      renderFridayGrid();
+      updateFridayCount();
+      const fridayErr = document.getElementById('fridayErr');
+      fridayErr.textContent = 'Someone just filled ' + result.conflicts.map(formatFriday).join(', ') + '. Pick different date(s) below.';
+      fridayErr.style.display = 'block';
+    } else {
+      const fridayErr = document.getElementById('fridayErr');
+      fridayErr.textContent = 'Something went wrong saving your registration. Please try again.';
+      fridayErr.style.display = 'block';
+    }
+    submitBtn.disabled = false;
+    submitBtn.textContent = t('btn.submit');
+    return;
+  }
+
+  registration.totalFee = result.totalFee;
+
+  document.getElementById('regForm').style.display = 'none';
+  document.getElementById('confirm').style.display = 'block';
+  document.getElementById('confirmTotal').textContent = 'Total due: $' + registration.totalFee;
+  document.getElementById('refCode').textContent = 'Confirmation code: ' + refCode;
+  const datesLine = document.createElement('p');
+  datesLine.className = 'ref';
+  datesLine.style.color = 'var(--indigo)';
+  datesLine.style.marginTop = '10px';
+  datesLine.textContent = 'Kitchen Fridays: ' + chosenDates.map(formatFriday).join(', ');
+  document.getElementById('refCode').insertAdjacentElement('beforebegin', datesLine);
+});
+
+/* ---------- Admin panel (view-only link to the live Sheet) ---------- */
+
+const ADMIN_CODE = 'oplenac-board';
+
+let adminUnlocked = false;
+document.getElementById('adminLink').addEventListener('click', () => {
+  const panel = document.getElementById('adminPanel');
+  if(adminUnlocked){
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    return;
+  }
+  const code = window.prompt('Enter board access code:');
+  if(code === ADMIN_CODE){
+    adminUnlocked = true;
+    panel.style.display = 'block';
+  } else if(code !== null){
+    alert('Incorrect code.');
+  }
+});
+</script>
+</body>
+</html>
